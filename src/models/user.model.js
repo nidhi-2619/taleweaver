@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
-
+import jwt from "jsonwebtoken";
 
 const userSchema  = new mongoose.Schema({
     username:{
@@ -82,11 +82,11 @@ userSchema.methods.generateAccessToken = function(){
         username:this.username,
         email:this.email,
     
-    }, process.env.ACCESS_TOKEN_SECRET, {expiresIn:process.env.ACCESS_TOKEN_EXPIRY});
+    }, process.env.ACCESS_TOKEN_SECRET, {expiresIn:`${process.env.ACCESS_TOKEN_EXPIRY}`});
 }
 // refresh token has less information than access token, and we use it oftenly
 userSchema.methods.generateRefreshToken =  function(){
-    return jwt.sign({_id:this._id}, process.env.REFESH_TOKEN_SECRET, {expiresIn: process.env.REFESH_TOKEN_EXPIRY});
+    return jwt.sign({_id:this._id}, process.env.REFESH_TOKEN_SECRET, {expiresIn: "7d"});
 }
 
 

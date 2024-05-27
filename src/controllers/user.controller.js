@@ -84,15 +84,17 @@ const loginUser = async(req, res)=>{
         throw new ApiError(401, "Invalid credentials")
     }
     const {accessToken,refreshToken} = await generateAccessAndRefreshToken(user._id)
-
-    const loggedIn = User.findbyId(user._id).select("-password -refreshToken")
+    const options = {
+        httpOnly: true,
+        secure: true
+    }
+    const loggedIn = User.findById(user._id).select("-password -refreshToken")
     res.status(200)
-    .cookie("accessToken", accessToken)
-    .cookie("refreshToken", refreshToken)
+    .cookie("accessToken", accessToken, options)
+    .cookie("refreshToken", refreshToken, options)
     .json({
-        loggedIn,
-        accessToken,
-        refreshToken
+        "message":"User logged In Successfully.",
+        accessToken
     })
 
 }

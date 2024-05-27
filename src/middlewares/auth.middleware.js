@@ -8,11 +8,11 @@ export const verifyJWT = async(req, _, next)=>{
     // user can send access token in two ways
     // either by sending it in the headers or by sending it in the cookies
     const token = req.headers.authorization.split(" ")[1] || req.cookies?.accessToken
-    if(!token){
+    if(token===undefined){
         throw new ApiError(401, "Unauthorized Request")
     }
-    const decoded = jwt.verify(token, process.env.JWT_SECRET)
-    const user = await User.findById(decoded.id).select("-password -refreshToken")
+    const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET)
+    const user = await User.findById(decoded._id).select("-password -refreshToken")
 
     if(!user){
 
@@ -22,6 +22,7 @@ export const verifyJWT = async(req, _, next)=>{
     next()
   }
   catch(err){
-    throw new ApiError(401, "Unauthorized Request")
+    // throw new ApiError(401, "Unauthorized Request")
+    console.log(err)
   }
 }
