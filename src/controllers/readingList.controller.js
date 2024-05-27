@@ -1,6 +1,8 @@
 import mongoose,{Schema} from "mongoose";
 import { ReadingList } from "../models/readingList.model.js";
 import { ApiError } from "../utils/ApiError.js";
+import { User } from "../models/user.model.js";
+import { Story } from "../models/story.model.js";
 
 const createReadingList = async(req, res)=>{
     const {title} = req.body
@@ -17,7 +19,10 @@ const createReadingList = async(req, res)=>{
         throw new ApiError(500, "Reading List not able to created")
     }
 
-    readingList.creator = req.user._id 
+    const user = await User.findOne({
+        _id:req.user._id
+    }).select("_id username email profilePicture badge ")
+    readingList.creator = user
     await readingList.save()
 
     res.status(200).json({
@@ -56,11 +61,14 @@ const addStoryToReadingList = async(req, res)=>{
     if(!readingList){
         throw new ApiError(400, "Reading List does not exist")
     }
-
-    if(readingList?.stories?.includes(storyId)){
+    const story = await Story.findById(storyId)
+    if(!story){
+        throw new ApiError(400, "Story does not exist")
+    }
+    if(readingList?.stories?.includes(story)){
         throw new ApiError(400, "Story already exists in the Reading List")
     }
-    readingList.stories.push(storyId)
+    readingList.stories.push(story)
     await readingList.save()
 
     res.status(200).json({

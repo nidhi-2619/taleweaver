@@ -14,7 +14,7 @@ const readingListSchema = new mongoose.Schema({
     ],
     creator:{
         type: mongoose.Schema.Types.ObjectId,
-        ref:'User'
+        ref:'User',
     },
 
 },{timestamp:true})
