@@ -4,7 +4,8 @@ import { verifyJWT } from "../middlewares/auth.middleware.js";
 import { 
     createStory,
     getStory,
-    getStories,
+    // getStories,
+    getStoriesByCategory,
     updateStory,
     deleteStory,
     togglePublishStory,
@@ -14,14 +15,15 @@ from "../controllers/story.controller.js";
  
 const router = Router()
 
-router.use(verifyJWT)
+// router.use(verifyJWT)
 
 router.route("/")
-    .get(getStories)
+    .get(getStoriesByCategory)
     .post(upload.single("cover"), createStory)
 
-router.route("/:storyId")
+router.route("/title")
     .get(getStory)
     .patch(updateStory)
     .delete(deleteStory)
     
+export default router;    

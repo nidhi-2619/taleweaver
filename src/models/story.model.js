@@ -1,8 +1,22 @@
 import mongoose,{Schema} from "mongoose"
 
+const storyCategories = [
+    'horror',
+    'young-adult',
+    'romance',
+    'fiction',
+    'non-fiction',
+    'sci-fiction',
+    'paranomal',
+    'contemporary',
+    'fantasy',
+    'supernatural'
+]
+
 const storySchema = Schema({
     title: {
         type: String,
+        required:true
     },
     author:{
             type: Schema.Types.ObjectId,
@@ -20,7 +34,7 @@ const storySchema = Schema({
         type: Boolean,
         default: false
     },
-    content:{
+    description:{
         type: String,
         required: true
     },
@@ -29,8 +43,8 @@ const storySchema = Schema({
         default: 0
     },
     category:{
-        type: String,
-        default: ""
+        type: Schema.Types.ObjectId,
+        ref: "Category"
     },
     tags:{
         type: Array,
