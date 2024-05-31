@@ -30,9 +30,11 @@ app.use(cookieParser())
 import userRouter from './routes/user.route.js'
 import storyRouter from './routes/story.route.js'
 import readingListRouter from './routes/readingList.route.js'
+import chapterRouter from './routes/chapter.route.js'
 
 app.use('/api/v1/users',userRouter)
 app.use('/api/v1/story',storyRouter)
 app.use('/api/v1/reading-list',readingListRouter)
+app.use('/api/v1/stories',chapterRouter)
 
 export {app};
